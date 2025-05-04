@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  app:
+    build: ./app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - POSTGRES_DB=polls
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - DB_HOST=db
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: polls
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+volumes:
+  pgdata:
